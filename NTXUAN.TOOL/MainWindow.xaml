@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="NTXUAN_TOOL" Height="300" Width="300">
     <Grid Margin="0,10,2,-3">
-        <Button Content="Open" Click="Button_Click_OpenAsync" Margin="88,36,88,192" RenderTransformOrigin="0.468,1.227"/>
-        <Button Content="Close" Margin="88,133,88,96" Click="Button_Click_CloseAsync"/>
+        <Button Content="Start" Click="Button_Click_Start" Margin="88,36,88,192" RenderTransformOrigin="0.468,1.227"/>
+        <Button Content="End" Margin="88,133,88,96" Click="Button_Click_End"/>
     </Grid>
 </Window>
