@@ -230,7 +230,6 @@ D:\GitDesktop\Selenium\NTXUAN.TOOL\bin\Debug\WebDriver.dll
 D:\GitDesktop\Selenium\NTXUAN.TOOL\bin\Debug\Newtonsoft.Json.xml
 D:\GitDesktop\Selenium\NTXUAN.TOOL\bin\Debug\System.Drawing.Common.xml
 D:\GitDesktop\Selenium\NTXUAN.TOOL\bin\Debug\WebDriver.xml
-D:\GitDesktop\Selenium\NTXUAN.TOOL\obj\Debug\NTXUAN.TOOL.csprojAssemblyReference.cache
 D:\GitDesktop\Selenium\NTXUAN.TOOL\obj\Debug\NTXUAN.TOOL.exe.config
 D:\GitDesktop\Selenium\NTXUAN.TOOL\obj\Debug\MainWindow.g.cs
 D:\GitDesktop\Selenium\NTXUAN.TOOL\obj\Debug\App.g.cs
