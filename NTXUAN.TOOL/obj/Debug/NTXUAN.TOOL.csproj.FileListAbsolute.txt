@@ -244,3 +244,4 @@ D:\GitDesktop\Selenium\NTXUAN.TOOL\obj\Debug\NTXUAN.TOOL.csproj.CoreCompileInput
 D:\GitDesktop\Selenium\NTXUAN.TOOL\obj\Debug\NTXUAN.TOOL.csproj.CopyComplete
 D:\GitDesktop\Selenium\NTXUAN.TOOL\obj\Debug\NTXUAN.TOOL.exe
 D:\GitDesktop\Selenium\NTXUAN.TOOL\obj\Debug\NTXUAN.TOOL.pdb
+D:\GitDesktop\Selenium\NTXUAN.TOOL\obj\Debug\NTXUAN.TOOL.csprojAssemblyReference.cache

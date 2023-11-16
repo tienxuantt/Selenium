@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NTXUAN.TOOL"
         mc:Ignorable="d"
-        Title="NTXUAN_TOOL" Height="300" Width="300">
+        Title="NTXUAN_TOOL" Height="400" Width="300">
     <Grid Margin="0,10,2,-3">
-        <Button Content="Start" Click="Button_Click_StartAsync" Margin="88,36,88,192" RenderTransformOrigin="0.468,1.227"/>
-        <Button Content="End" Margin="88,133,88,96" Click="Button_Click_End"/>
+        <Button Content="Tự động bắn slack jira mới" Click="Button_Click_StartAsync" Margin="10,10,10,318" RenderTransformOrigin="0.468,1.227"/>
+        <Button Content="Đẩy dữ liệu lên baotri" Click="Button_Click_PushData" Margin="10,58,10,270" RenderTransformOrigin="0.468,1.227"/>
+        <Button Content="Lấy dữ liệu baotri" Click="Button_Click_GetData" Margin="10,105,10,223" RenderTransformOrigin="0.468,1.227"/>
     </Grid>
 </Window>

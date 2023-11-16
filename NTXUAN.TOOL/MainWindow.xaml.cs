@@ -1,6 +1,8 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -14,7 +16,7 @@ namespace NTXUAN.TOOL
     {
         public static List<ChromeDriver> drivers = new List<ChromeDriver>();
         public static List<string> ListJira = new List<string>();
-        public static List<string> Logs = new List<string>();
+        public static List<string> Comments = new List<string>();
 
         public static bool Flag = true;
         public static int CountErrors = 0;
@@ -199,13 +201,127 @@ namespace NTXUAN.TOOL
             }
             catch (System.Exception e)
             {
-                CheckJiraStatus();
+                CheckJiraStatus();//delete-comment
             }
         }
 
-        private void Button_Click_End(object sender, RoutedEventArgs e)
+        private void Button_Click_PushData(object sender, RoutedEventArgs e)
         {
-            Flag = false;
+            DeleteComments();
+            LoadFileData();
+            AddComments();
+        }
+
+        private void LoadFileData()
+        {
+            Thread.Sleep(1000);
+
+            string data = "";
+            var MaxLength = 30000;
+            var inputFileName = "D:/InputData.txt";
+
+            List<string> lines = File.ReadLines(inputFileName).ToList();
+
+            foreach (var item in lines)
+            {
+                data = data + item + "\n";
+
+                if(data.Length > MaxLength)
+                {
+                    Comments.Add(data);
+                    data = "";
+                }
+            }
+
+            if (!string.IsNullOrEmpty(data))
+            {
+                Comments.Add(data);
+            }
+        }
+
+        private void AddComments()
+        {
+            Thread.Sleep(1000);
+
+            try
+            {
+                foreach (var item in Comments)
+                {
+                    var comment = driver.FindElement(By.CssSelector("#addcomment #footer-comment-button"));
+
+                    comment.Click();
+                    Thread.Sleep(1000);
+
+                    var commentArea = driver.FindElement(By.CssSelector("#addcomment #comment"));
+
+                    commentArea.SendKeys(item);
+                    Thread.Sleep(2000);
+
+                    var commentSubmit = driver.FindElement(By.CssSelector("#addcomment #issue-comment-add-submit"));
+
+                    commentSubmit.Click();
+                    Thread.Sleep(1500);
+                }
+            }
+            catch (System.Exception e)
+            {
+            }
+        }
+
+        private void DeleteComments()
+        {
+            Thread.Sleep(1000);
+
+            try
+            {
+                var comment = driver.FindElement(By.CssSelector(".activity-comment .delete-comment"));
+
+                while(comment != null)
+                {
+                    var head = driver.FindElement(By.CssSelector(".activity-comment .concise .action-head"));
+
+                    head.Click();
+                    Thread.Sleep(500);
+                    comment.Click();
+                    Thread.Sleep(500);
+
+                    var btnSave = driver.FindElement(By.CssSelector("#comment-delete-submit"));
+                    btnSave.Click();
+                    Thread.Sleep(1500);
+
+                    comment = driver.FindElement(By.CssSelector(".activity-comment .delete-comment"));
+                }
+            }
+            catch (System.Exception e)
+            {
+            }
+        }
+
+        private void Button_Click_GetData(object sender, RoutedEventArgs e)
+        {
+            Comments = new List<string>();
+
+            try
+            {
+                var fileName = string.Format("D:/OutputComments_{0}.txt", DateTime.Now.ToString("HH_mm_ss")); 
+                var listComments = driver.FindElements(By.CssSelector(".activity-comment .action-body"));
+
+                if (listComments != null && listComments.Count > 0)
+                {
+                    foreach (var item in listComments)
+                    {
+                        Comments.Add(item.Text);
+                    }
+                }
+
+                using (StreamWriter sw = File.CreateText(fileName))
+                {
+                    sw.Write(string.Join("", Comments.ToArray()));
+                }
+            }
+            catch (System.Exception)
+            {
+            }
         }
     }
 }
