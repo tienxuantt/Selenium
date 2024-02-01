@@ -10,5 +10,6 @@
         <Button Content="Tự động bắn slack jira mới" Click="Button_Click_StartAsync" Margin="10,10,10,318" RenderTransformOrigin="0.468,1.227"/>
         <Button Content="Đẩy dữ liệu lên baotri" Click="Button_Click_PushData" Margin="10,58,10,270" RenderTransformOrigin="0.468,1.227"/>
         <Button Content="Lấy dữ liệu baotri" Click="Button_Click_GetData" Margin="10,105,10,223" RenderTransformOrigin="0.468,1.227"/>
+        <Button Content="Save File Split" Click="Button_Click_SplitFile" Margin="10,154,10,174" RenderTransformOrigin="0.468,1.227"/>
     </Grid>
 </Window>

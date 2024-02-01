@@ -20,13 +20,12 @@ namespace NTXUAN.TOOL
 
         public static bool Flag = true;
         public static int CountErrors = 0;
-
-        public static ChromeDriver driver { get; set; }
+        public static ChromeDriver driver = null;
 
         public MainWindow()
         {
             InitializeComponent();
-            InitChromeDriver();
+            //InitChromeDriver();
         }
 
         private void InitChromeDriver()
@@ -77,7 +76,7 @@ namespace NTXUAN.TOOL
         {
             WebClient client = new WebClient();
 
-            string webhook = "https://hooks.slack.com/services/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";
+            string webhook = "https://hooks.slack.com/services/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";
             string payload = "{\"text\": \"" + RemoveSpecialCharacters(message) + "\"}";
 
             client.Headers.Add("Content-Type", "application/json");
@@ -86,7 +85,7 @@ namespace NTXUAN.TOOL
             {
                 client.UploadData(webhook, Encoding.UTF8.GetBytes(payload));
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
             }
         }
@@ -113,22 +112,32 @@ namespace NTXUAN.TOOL
 
         public static void OpenChrome()
         {
-            ChromeOptions options = new ChromeOptions();
+            if(driver == null)
+            {
+                ChromeOptions options = new ChromeOptions();
 
-            options.AddArgument(@"user-data-dir=D:\Chrome\Profile");
+                options.AddArgument(@"user-data-dir=D:\Chrome\Profile");
 
-            driver = new ChromeDriver(GetDriverService(), options);
+                driver = new ChromeDriver(GetDriverService(), options);
+            }
         }
 
         private void Button_Click_StartAsync(object sender, RoutedEventArgs e)
         {
-            InitListJira();
-
-            while (Flag)
+            if(driver == null)
             {
-                Thread.Sleep(3000);
+                OpenChrome();
+            }
+            else
+            {
+                InitListJira();
 
-                CheckJiraStatus();
+                while (Flag)
+                {
+                    Thread.Sleep(3000);
+
+                    CheckJiraStatus();
+                }
             }
         }
 
@@ -207,9 +216,17 @@ namespace NTXUAN.TOOL
 
         private void Button_Click_PushData(object sender, RoutedEventArgs e)
         {
+            OpenChrome();
+
             DeleteComments();
             LoadFileData();
-            AddComments();
+            //AddComments();
+        }
+
+        private void Button_Click_SplitFile(object sender, RoutedEventArgs e)
+        {
+            LoadFileData();
+            SaveFileSplit();
         }
 
         private void LoadFileData()
@@ -217,8 +234,8 @@ namespace NTXUAN.TOOL
             Thread.Sleep(1000);
 
             string data = "";
-            var MaxLength = 30000;
-            var inputFileName = "D:/InputData.txt";
+            var MaxLength = 29000;
+            var inputFileName = "D:/Selenium_Source/InputData.txt";
 
             List<string> lines = File.ReadLines(inputFileName).ToList();
 
@@ -278,16 +295,13 @@ namespace NTXUAN.TOOL
 
                 while(comment != null)
                 {
-                    var head = driver.FindElement(By.CssSelector(".activity-comment .concise .action-head"));
-
-                    head.Click();
+                    ClickElement(".activity-comment .concise .action-head");
                     Thread.Sleep(500);
-                    comment.Click();
+                    ClickElement(".activity-comment .delete-comment");
                     Thread.Sleep(500);
 
-                    var btnSave = driver.FindElement(By.CssSelector("#comment-delete-submit"));
-                    btnSave.Click();
-                    Thread.Sleep(1500);
+                    ClickElement("#comment-delete-submit");
+                    Thread.Sleep(1000);
 
                     comment = driver.FindElement(By.CssSelector(".activity-comment .delete-comment"));
                 }
@@ -297,8 +311,50 @@ namespace NTXUAN.TOOL
             }
         }
 
+        public static void SaveFileSplit()
+        {
+            int index = 1;
+
+            try
+            {
+                // Clear files
+                DirectoryInfo di = new DirectoryInfo("D:/Selenium_Source/Output");
+
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    file.Delete();
+                }
+
+                foreach (var item in Comments)
+                {
+                    using (StreamWriter sw = File.CreateText(string.Format("D:/Selenium_Source/Output/File_Output_{0}.txt", index++)))
+                    {
+                        sw.Write(item);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+            }
+        }
+
+        public static void ClickElement(string selector)
+        {
+            try
+            {
+                var element = driver.FindElement(By.CssSelector(selector));
+
+                element.Click();
+            }
+            catch (Exception e)
+            {
+            }
+        }
+
         private void Button_Click_GetData(object sender, RoutedEventArgs e)
         {
+            OpenChrome();
+
             Comments = new List<string>();
 
             try
@@ -319,7 +375,7 @@ namespace NTXUAN.TOOL
                     sw.Write(string.Join("", Comments.ToArray()));
                 }
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
             }
         }
